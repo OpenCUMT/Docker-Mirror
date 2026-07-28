@@ -46,3 +46,13 @@ jobs:
             git diff --cached --quiet || git commit -m "Update sync checkpoint"
 
             git push
+      
+      - name: Process Private Registry
+        env:
+          USERNAME: ${{ secrets.USERNAME }}
+          PASSWORD: ${{ secrets.PASSWORD }}
+          DOMAIN: ${{ secrets.DOMAIN }}
+          NAMESPACE: ${{ secrets.NAMESPACE }}
+        run: |
+            python swr_sync_images.py
+            python swr_make_public.py
